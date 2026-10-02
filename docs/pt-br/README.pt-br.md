@@ -20,6 +20,32 @@
 
 ---
 
+## Instalacao via Comando
+
+Instala exclusivamente o arquivo `skill.md` e a pasta `emojis discord` no seu projeto:
+
+### PowerShell (Windows)
+
+```powershell
+irm https://raw.githubusercontent.com/ihyos/Professional-Discord-Bot-Skills/master/install.ps1 | iex
+```
+
+### Bash (Linux / macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ihyos/Professional-Discord-Bot-Skills/master/install.sh | bash
+```
+
+### Git Sparse-Checkout (Nativo)
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://github.com/ihyos/Professional-Discord-Bot-Skills.git
+cd Professional-Discord-Bot-Skills
+git sparse-checkout set skill.md "emojis discord"
+```
+
+---
+
 ## Visao Geral
 
 Esta skill governa cada decisao tomada por um agente de IA ao construir, estender ou corrigir um bot Discord profissional usando Discord Components V2 em qualquer linguagem de programacao (TypeScript, JavaScript, Python, Go, Rust, C#, etc.).
