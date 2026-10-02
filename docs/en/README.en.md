@@ -7,13 +7,14 @@
 
 # Professional Discord Bot Skills
 
-**Antigravity AI Agent Skill | discord.js + Components V2 | TypeScript**
+**Antigravity AI Agent Skill | Components V2 | Multi-Language Architecture**
 
 <br />
 
 [![PT-BR](https://img.shields.io/badge/lang-PT--BR-009c3b?style=flat-square)](../pt-br/README.pt-br.md)
 [![English](https://img.shields.io/badge/lang-English-012169?style=flat-square)](./README.en.md)
 [![Components V2](https://img.shields.io/badge/Discord-Components%20V2-5865F2?style=flat-square&logo=discord&logoColor=white)](https://docs.discord.com/developers/components/overview)
+[![Multi-Language](https://img.shields.io/badge/Languages-TS%20%7C%20JS%20%7C%20Python%20%7C%20Go%20%7C%20Any-23272A?style=flat-square)](https://docs.discord.com)
 
 </div>
 
@@ -21,7 +22,7 @@
 
 ## Overview
 
-This skill governs every decision made by an AI agent when building, extending, or correcting a professional Discord bot using discord.js v14 and Discord Components V2.
+This skill governs every decision made by an AI agent when building, extending, or correcting a professional Discord bot using Discord Components V2 in any programming language (TypeScript, JavaScript, Python, Go, Rust, C#, etc.).
 
 ---
 
@@ -39,6 +40,6 @@ This skill governs every decision made by an AI agent when building, extending, 
 
 <div align="center">
 
-<sub>Antigravity IDE · discord.js v14 · Discord Components V2</sub>
+<sub>Antigravity IDE | Multi-Language Architecture | Discord Components V2</sub>
 
 </div>

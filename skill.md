@@ -64,11 +64,14 @@ Before initiating any bot architecture, code implementation, or refactoring, ALW
 
 ## 6. Mandatory Validation and Compilation
 
-- Any code change MUST be validated immediately after the change.
-- Run `npm run build` after every code modification.
-- The project MUST compile without TypeScript errors before considering the change complete.
-- If the build fails, investigate and fix the actual cause before declaring the task complete.
-- Do not hide, suppress, bypass, or ignore compiler errors.
+- Any code change MUST be validated immediately after the change using the validation toolchain of the chosen programming language.
+- For TypeScript / JavaScript: Run `npm run build` or `npx tsc --noEmit`.
+- For Python: Run `python -m py_compile`, `mypy`, or project linter/tests.
+- For Go: Run `go build` and `go vet`.
+- For Rust: Run `cargo check` or `cargo build`.
+- For any language: The project MUST compile, parse, or type-check without errors before considering the change complete.
+- If the build or validation fails, investigate and fix the actual cause before declaring the task complete.
+- Do not hide, suppress, bypass, or ignore compiler and runtime errors.
 - When relevant, also validate the affected runtime flow after compilation.
 
 ## 7. Discord Interaction Timing and Timeout Prevention

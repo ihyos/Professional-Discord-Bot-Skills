@@ -114,20 +114,22 @@ Before changing any line:
 3. Identify exact types, properties, function contracts, return values, and error paths.
 4. Determine the smallest safe change required.
 5. Modify only the necessary code.
-6. Run `npm run build` immediately.
+6. Run the build or validation command for the chosen language immediately.
 7. Review the affected flow for regressions.
 
 ---
 
 ## 6. Mandatory Validation and Compilation
 
-Any code change MUST be validated immediately after the change.
+Any code change MUST be validated immediately after the change using the toolchain of the chosen language.
 
-Run `npm run build` after every code modification.
+- For TypeScript or JavaScript: Run `npm run build` or `npx tsc --noEmit`.
+- For Python: Run `python -m py_compile`, `mypy`, or project test suite.
+- For Go: Run `go build` and `go vet`.
+- For Rust: Run `cargo check` or `cargo build`.
+- For any language: The project MUST compile or pass validation without errors before considering the change complete.
 
-The project MUST compile without TypeScript errors before considering the change complete.
-
-Do not hide, suppress, bypass, or ignore compiler errors.
+Do not hide, suppress, bypass, or ignore compiler or runtime errors.
 
 ---
 

@@ -114,20 +114,22 @@ Antes de alterar qualquer linha:
 3. Identificar tipos, propriedades e contratos de funcao exatos.
 4. Determinar a menor mudanca segura necessaria.
 5. Modificar apenas o codigo necessario.
-6. Executar `npm run build` imediatamente.
+6. Executar o comando de build ou validacao da linguagem utilizada imediatamente.
 7. Revisar o fluxo afetado para regressoes.
 
 ---
 
 ## 6. Validacao e Compilacao Obrigatoria
 
-Qualquer alteracao de codigo DEVE ser validada imediatamente apos a mudanca.
+Qualquer alteracao de codigo DEVE ser validada imediatamente apos a mudanca, utilizando o toolchain da linguagem escolhida.
 
-Executar `npm run build` apos cada modificacao de codigo.
+- Para TypeScript ou JavaScript: Executar `npm run build` ou `npx tsc --noEmit`.
+- Para Python: Executar `python -m py_compile`, `mypy` ou suite de testes.
+- Para Go: Executar `go build` e `go vet`.
+- Para Rust: Executar `cargo check` ou `cargo build`.
+- Para qualquer linguagem: O projeto DEVE compilar ou passar na validacao sem erros antes de considerar a mudanca concluida.
 
-O projeto DEVE compilar sem erros TypeScript antes de considerar a mudanca concluida.
-
-Nao ocultar, suprimir, contornar ou ignorar erros do compilador.
+Nao ocultar, suprimir, contornar ou ignorar erros do compilador ou interpretador.
 
 ---
 
