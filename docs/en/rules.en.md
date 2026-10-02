@@ -7,26 +7,35 @@
 
 # Skill Rules
 
-**Professional Discord Bot Skills · English**
+**Professional Discord Bot Skills | English**
 
 </div>
 
 ---
 
-## 1. Writing and Punctuation
+## 1. Initial Alignment and Mandatory Questions
 
-Never use em dash or en dash punctuation anywhere in bot messages, text, titles, descriptions, footers, logs, or user-facing UI copy.
+Before initiating any bot architecture, code implementation, or refactoring, the AI Agent MUST always ask the user:
 
-Accepted substitutes: vertical bar `|`, colon `:`, parentheses `(...)`, or simple hyphen `-`.
-
-The agent ALWAYS asks the user which language to use before creating or modifying bot-facing text:
-
-- Brazilian Portuguese (PT-BR)
-- English
+1. Bot Type: What is the bot's purpose and functionality?
+2. Bot Language: PT-BR or English?
+3. Programming Language: TypeScript, JavaScript, Python, etc.
+4. Bot Name: What is the bot name for branding and identity?
+5. Database Choice: Local database (testing only) or remote persistence (Supabase, SQLite, PostgreSQL, etc.)?
 
 ---
 
-## 2. Visual Design and Components V2
+## 2. Writing and Punctuation
+
+Never use em dash or en dash punctuation anywhere in bot messages, text, titles, descriptions, footers, logs, or user-facing UI copy.
+
+Accepted substitutes: vertical bar `|`, colon `:`, parentheses `(...)`, or simple hyphen `-` for lists.
+
+User-facing text strictly follows the language chosen in the initial questionnaire.
+
+---
+
+## 3. Visual Design and Components V2
 
 All embeds, panels, menus, dashboards, confirmations, errors, and success messages MUST use **Discord Components V2**.
 
@@ -55,19 +64,46 @@ Use `new SeparatorBuilder().setDivider(true)` to separate major content blocks.
 
 ---
 
-## 3. Emoji Rules
+## 4. Emoji Rules and Asset Pipeline
 
 Never use standard Unicode emojis in any bot message, title, button, panel, embed, notification, or log.
 
-Prohibited examples: `📦 💸 📝 🛒 ℹ️ 🚨 ⏱️ 📋`.
+Prohibited examples: `📦 💸 📝 🛒 ℹ️ 🚨 ⏱️ 📋 🔘 ⌨️ 💰`.
 
 Only use custom Discord emojis in the format `<:name:id>` or `<a:name:id>`.
+
+### Automatic Directory Recognition
+
+The AI Agent MUST automatically recognize asset directories as custom emoji storage:
+
+- `emojis`
+- `emojis personalizados`
+- `emojis discord`
+- `emojis bot`
+
+Example structure for the official custom emoji pack:
+
+```
+emojis bot/
+  exemple.png
+  exemple2.png
+  etc
+```
+
+### Discord API Upload Logic
+
+When the user provides sufficient credentials (bot token and application or guild ID):
+
+1. Read the PNG files located in the emoji asset directory.
+2. Upload assets via the official Discord API to the application or guild emojis tab.
+3. Retrieve the generated `<:name:id>` identifiers.
+4. Reference these custom emojis directly inside bot UI components, ensuring error-free rendering.
 
 If an appropriate custom emoji is unavailable, omit the emoji rather than substituting a Unicode emoji.
 
 ---
 
-## 4. Code Preservation and Anti-Regression
+## 5. Code Preservation and Anti-Regression
 
 Never modify, refactor, remove, or replace existing working code without absolute certainty about the expected behavior and impact on the complete system.
 
@@ -83,7 +119,7 @@ Before changing any line:
 
 ---
 
-## 5. Mandatory Validation and Compilation
+## 6. Mandatory Validation and Compilation
 
 Any code change MUST be validated immediately after the change.
 
@@ -95,7 +131,7 @@ Do not hide, suppress, bypass, or ignore compiler errors.
 
 ---
 
-## 6. Interaction Timing and Timeout Prevention
+## 7. Interaction Timing and Timeout Prevention
 
 Strictly respect Discord's 3-second interaction response limit.
 
@@ -107,61 +143,52 @@ After deferring, use the correct follow-up or edit operation for the interaction
 
 ---
 
-## 7. Supabase as the Single Source of Truth
+## 8. Database Architecture and Persistence Strategy
 
-Never create or use local persistence as a substitute for Supabase.
+Respect the database selection established in initial question 5:
 
-Prohibited: `local-db.json`, SQLite, temporary persistence files, in-memory structures for application state.
+- **Local Database**: Permitted exclusively for testing and rapid prototyping.
+- **Production Persistence (Supabase, SQLite, PostgreSQL)**: Single source of truth for live environments.
 
-All queries, inserts, updates, and deletes MUST execute directly against the official Supabase PostgreSQL database.
+When Supabase or a remote database is selected for production:
 
-If a record does not exist in Supabase, the result MUST be null, empty, or otherwise absent according to the function contract.
-
-Never create automatic seeders that detect an empty table and recreate products, orders, wallets, users, configuration, or historical data.
+- All operations MUST execute directly against the official database.
+- If a record does not exist, the result MUST be null or absent according to contract.
+- Never create automatic seeders that recreate data without explicit user request.
 
 ---
 
-## 8. No Mocks or Fake Production Data
+## 9. No Mocks or Fake Production Data
 
-Never introduce mock production data to compensate for missing Supabase records.
+Never introduce mock production data to compensate for missing database records.
 
-Test fixtures MUST remain isolated from production flows and MUST NOT be silently used as production fallbacks.
+Test fixtures MUST remain isolated from production flows.
 
 If required production data is missing, handle the missing-data case explicitly and safely.
 
 ---
 
-## 9. Absolute Credential Security
+## 10. Absolute Credential Security
 
 Never hardcode credentials in source code.
 
-Prohibited: Discord bot tokens, API keys, passwords, secrets, private keys, Supabase credentials, payment credentials, or webhook secrets in any source file.
+Prohibited: Discord bot tokens, API keys, passwords, secrets, private keys, database credentials, or webhook secrets in any source file.
 
 Never use hardcoded fallbacks such as `process.env.KEY || 'secret_key'`.
 
 All credentials MUST be read through `process.env`.
 
-If a required environment variable is missing, the application MUST throw an explicit error identifying the missing environment variable.
+If a required environment variable is missing, the application MUST throw an explicit error identifying the missing variable.
 
 ---
 
-## 10. Zero Code Comments
+## 11. Zero Code Comments
 
 Never add comments to project source code.
 
 Prohibited: `//`, `/* ... */`, JSDoc, inline annotations, TODO comments, commented-out code, documentation comments inside code files.
 
 Source files MUST contain executable or declarative code only.
-
----
-
-## 11. User-Facing Language Selection
-
-Bot messages must be written in PT-BR or English.
-
-ALWAYS ask the user which of these two languages should be used when the language has not already been explicitly established for the current task.
-
-Maintain consistent terminology across panels, commands, buttons, modals, errors, confirmations, and logs.
 
 ---
 
@@ -177,6 +204,6 @@ Never confirm a payment, delivery, withdrawal, purchase, or database mutation un
 
 <div align="center">
 
-<sub>Professional Discord Bot Skills · English · Antigravity IDE</sub>
+<sub>Professional Discord Bot Skills | English | Antigravity IDE</sub>
 
 </div>

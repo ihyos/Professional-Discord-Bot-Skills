@@ -1,15 +1,22 @@
 # Discord Bot Development Skill
 
-## 1. Writing and Punctuation Rules
+## 1. Initial Project Setup and Mandatory Questions
+
+Before initiating any bot architecture, code implementation, or refactoring, ALWAYS ask the user the following five mandatory questions:
+
+1. Bot Type: What is the bot's purpose and functionality?
+2. Bot Language: PT-BR or English?
+3. Programming Language: TypeScript, JavaScript, Python, etc.
+4. Bot Name: What is the bot name for branding and identity?
+5. Database Choice: Local database (testing only) or remote persistence (Supabase, SQLite, PostgreSQL, etc.)?
+
+## 2. Writing and Punctuation Rules
 
 - NEVER use em dash or en dash punctuation anywhere in bot messages, text, titles, descriptions, footers, logs, documentation generated for the bot, or user-facing UI copy.
-- Use vertical bars (`|`), colons (`:`), parentheses (`(...)`), or a simple hyphen (`-`) instead.
-- Before creating or modifying user-facing bot text, ALWAYS ask the user which language they want:
-  - Brazilian Portuguese (PT-BR)
-  - English
-- Bot-facing text must always be written in either PT-BR or English. Never introduce another language unless the user explicitly requests it.
+- Use vertical bars (`|`), colons (`:`), parentheses (`(...)`), or simple hyphens (`-`) for lists.
+- Bot-facing text must always be written in either PT-BR or English according to the answer to question 2.
 
-## 2. Visual Design and Discord Components V2
+## 3. Visual Design and Discord Components V2
 
 - ALL embeds, panels, menus, dashboards, confirmations, errors, success messages, and other structured Discord UI must use Discord Components V2.
 - Messages using Components V2 MUST include `flags: MessageFlags.IsComponentsV2`.
@@ -20,17 +27,30 @@
 - The standard accent color is white (`#FFFFFF`).
 - Preserve visual consistency across all panels and commands.
 
-## 3. Strict Emoji Rules
+## 4. Strict Emoji Rules and Custom Asset Pipeline
 
 - NEVER use standard Unicode emojis in any bot message, text, title, button, panel, embed replacement, notification, or log.
-- Examples of prohibited Unicode emojis include, but are not limited to: 📦, 💸, 📝, 🛒, ℹ️, 🚨, ⏱️, 📋, 🔘, ⌨️, 💰.
+- Examples of prohibited Unicode emojis include: 📦, 💸, 📝, 🛒, ℹ️, 🚨, ⏱️, 📋, 🔘, ⌨️, 💰.
 - ONLY use custom Discord emojis in the format `<:name:id>` or `<a:name:id>`.
-- Custom emojis may come from the application configured in Discord Developer Portal or from the official emoji server.
+- The AI Agent MUST automatically recognize asset directories such as:
+  - `emojis`
+  - `emojis personalizados`
+  - `emojis discord`
+  - `emojis bot`
+- These directories contain the PNG assets for all custom emojis intended for the bot.
+- Emoji Asset Structure Example:
+  ```
+  emojis bot/
+    exemple.png
+    exemple2.png
+    etc
+  ```
+- Workflow Logic: When the user provides sufficient credentials (bot token and target guild or application ID), upload the PNG assets directly to Discord via the Discord API. This registers the custom emojis and allows immediate use in bot UI components without rendering errors.
 - NEVER repeat emojis redundantly within the same block or message.
 - Use custom emojis contextually, dynamically, and harmoniously.
 - If an appropriate custom emoji is unavailable, omit the emoji rather than substituting a Unicode emoji.
 
-## 4. Stability, Preservation of Existing Code, and Anti-Regression
+## 5. Stability, Preservation of Existing Code, and Anti-Regression
 
 - NEVER modify, refactor, remove, or replace existing code that is already working correctly unless there is absolute certainty about the expected behavior and the impact on the complete system.
 - NEVER break existing functionality.
@@ -42,7 +62,7 @@
 - Do not perform unnecessary refactors while implementing a feature or fixing a bug.
 - Preserve existing public interfaces and behavior unless the requested change explicitly requires otherwise.
 
-## 5. Mandatory Validation and Compilation
+## 6. Mandatory Validation and Compilation
 
 - Any code change MUST be validated immediately after the change.
 - Run `npm run build` after every code modification.
@@ -51,7 +71,7 @@
 - Do not hide, suppress, bypass, or ignore compiler errors.
 - When relevant, also validate the affected runtime flow after compilation.
 
-## 6. Discord Interaction Timing and Timeout Prevention
+## 7. Discord Interaction Timing and Timeout Prevention
 
 - Strictly respect Discord's 3-second interaction response limit.
 - Use `deferReply()` immediately for slash commands or interaction handlers that perform database queries, external HTTP requests, multiple asynchronous operations, or other potentially slow work.
@@ -60,28 +80,26 @@
 - After deferring, use the correct follow-up or edit operation for the interaction lifecycle.
 - Never allow avoidable database or network latency to cause an interaction timeout.
 
-## 7. Supabase as the Single Source of Truth
+## 8. Database Architecture and Persistence Strategy
 
-- NEVER create or use local persistence as a substitute for Supabase.
-- NEVER create local database files such as `local-db.json`, SQLite databases, temporary persistence files, or equivalent local data stores for application state.
-- NEVER use in-memory data structures to mask, cache, recreate, or substitute for missing official database records when persistence is required.
-- ALL queries, inserts, updates, and deletes MUST execute directly against the official Supabase PostgreSQL database.
-- If a record does not exist in Supabase, the result MUST be null, empty, or otherwise absent according to the function contract.
-- Never resurrect deleted data from local state, memory, defaults, fixtures, mocks, or previous application state.
-- A deletion performed by the bot or directly in Supabase is permanent from the application's perspective.
-- NEVER create automatic seeders that detect an empty table and recreate products, orders, wallets, users, configuration, or historical data.
-- If a product is deleted, it MUST be physically deleted from Supabase, such as through the appropriate `DELETE FROM products ...` operation.
-- Do not leave hidden local copies or fallback records after deletion.
-- Supabase is the single source of truth for all persistent application data.
+- Follow the database selection established in initial question 5:
+  - Local Database: Reserved for local prototyping and rapid testing.
+  - Remote Production Persistence (Supabase, SQLite, PostgreSQL): Production source of truth.
+- When Supabase or remote persistence is selected, NEVER substitute it with silent local file fallbacks or in-memory caches.
+- ALL queries, inserts, updates, and deletes MUST execute directly against the designated database.
+- If a record does not exist, the result MUST be null, empty, or absent according to contract.
+- Never resurrect deleted data from local state, memory, or fixtures.
+- A deletion is permanent from the application perspective.
+- NEVER create automatic seeders that detect an empty table and recreate data without explicit user request.
 
-## 8. No Mocks or Fake Production Data
+## 9. No Mocks or Fake Production Data
 
 - NEVER introduce mock production data to compensate for missing Supabase records.
 - NEVER create fallback products, orders, wallets, balances, payments, or user records in code.
 - Test fixtures MUST remain isolated from production flows and MUST NOT be silently used as production fallbacks.
 - If required production data is missing, handle the missing-data case explicitly and safely.
 
-## 9. Absolute Credential Security
+## 10. Absolute Credential Security
 
 - NEVER hardcode credentials in source code.
 - NEVER hardcode Discord bot tokens, API keys, passwords, secrets, private keys, Supabase credentials, payment credentials, webhook secrets, or similar sensitive values in `.ts`, `.js`, `.json`, or any other source/configuration file committed as application code.
@@ -92,7 +110,7 @@
 - Keep secrets in `.env` or the appropriate secure environment configuration.
 - Do not expose secrets in logs, error messages, responses, source code, generated files, or Discord messages.
 
-## 10. Zero Code Comments
+## 11. Zero Code Comments
 
 - NEVER add comments to project source code.
 - This includes `//`, `/* ... */`, JSDoc, inline explanations, flow annotations, TODO comments, commented-out code, and documentation comments inside code files.
@@ -101,7 +119,7 @@
 - Do not preserve newly introduced commented-out code as part of a change.
 - This rule applies to TypeScript, JavaScript, JSON-like configuration where comments are supported, and other project source files.
 
-## 11. Safe Change Workflow
+## 12. Safe Change Workflow
 
 Before modifying code:
 
@@ -116,15 +134,15 @@ Before modifying code:
 
 Do not skip investigation because a change appears small.
 
-## 12. User-Facing Language Selection
+## 13. User-Facing Language Selection
 
 - Bot messages must be written in PT-BR or English.
-- ALWAYS ask the user which of these two languages should be used when the language has not already been explicitly established for the current task.
+- Follow the language established in the initial questionnaire.
 - Do not silently choose a third language.
 - Keep terminology consistent across panels, commands, buttons, modals, errors, confirmations, payment screens, withdrawal screens, delivery messages, and logs.
 - If the user explicitly specifies a language, follow that instruction without asking again for the same task.
 
-## 13. Standard Visual Pattern
+## 14. Standard Visual Pattern
 
 Use the following visual standard unless the user explicitly requests a different design:
 
@@ -139,7 +157,7 @@ Use the following visual standard unless the user explicitly requests a differen
 - Avoid redundant visual elements.
 - Preserve the existing project's visual identity when modifying an established panel.
 
-## 14. Error Handling and Data Integrity
+## 15. Error Handling and Data Integrity
 
 - Never hide errors that affect data integrity, payments, orders, balances, withdrawals, deliveries, or authentication.
 - Handle expected failures explicitly.

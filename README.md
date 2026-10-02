@@ -44,10 +44,11 @@ Esta skill governa cada decisao tomada por um agente de IA ao construir, estende
 ## Quick Reference | Referencia Rapida
 
 ```
-skill.md              Root skill instruction file consumed by the AI agent
+skill.md                                Root skill instruction file consumed by the AI agent
+emojis discord/emojis personalizados/   Official custom emoji PNG asset pack (215+ assets)
 docs/
-  en/                 English documentation
-  pt-br/              Portuguese (PT-BR) documentation
+  en/                                   English documentation
+  pt-br/                                Portuguese (PT-BR) documentation
 ```
 
 ---

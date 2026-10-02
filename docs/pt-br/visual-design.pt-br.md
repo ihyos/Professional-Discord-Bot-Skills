@@ -88,6 +88,24 @@ Nunca usar emojis Unicode.
 
 Usar apenas emojis Discord customizados no formato `<:name:id>` ou `<a:name:id>`.
 
+O agente reconhece pastas de assets como repositorios de emojis:
+
+- `emojis`
+- `emojis personalizados`
+- `emojis discord`
+- `emojis bot`
+
+Exemplo de estrutura do pack oficial de emojis personalizados:
+
+```
+emojis bot/
+  exemple.png
+  exemple2.png
+  etc
+```
+
+Logica de integracao: quando o usuario fornecer as credenciais necessarias, realizar o upload dos arquivos PNG diretamente para a aba de emojis da aplicacao ou servidor via API do Discord, permitindo o uso imediato dos IDs nas interfaces.
+
 Usar emojis de forma contextual e harmoniosa. Nunca repetir o mesmo emoji redundantemente dentro do mesmo bloco ou mensagem.
 
 Se um emoji customizado adequado nao estiver disponivel, omitir completamente.
